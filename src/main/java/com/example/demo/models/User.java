@@ -5,6 +5,7 @@ package com.example.demo.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +29,8 @@ public class User {
 	private String gender;
 	private List<Integer> followers= new ArrayList<>();
 	private List<Integer> followings= new ArrayList<>();
+	
+	@JsonIgnore
 	 @ManyToMany
 	private List<Post> savedPost = new ArrayList<>();
 	

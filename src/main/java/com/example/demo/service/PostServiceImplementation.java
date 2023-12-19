@@ -36,7 +36,7 @@ public class PostServiceImplementation implements PostService {
 		newPost.setVideo(post.getVideo());
 		newPost.setUser(user);
 		
-		return postrepository.save(newPost)
+		return postrepository.save(newPost);
 		
 //		return null;
 	}
@@ -81,7 +81,7 @@ public class PostServiceImplementation implements PostService {
 		Post post= findPostById(postId);
 		User user =userService.findUserById(userId);
 		
-		if(user.getSavedPost().add(post)) {
+		if(user.getSavedPost().contains(post)) {
 			user.getSavedPost().remove(post);
 		} 
 		else user.getSavedPost().add(post);
@@ -92,20 +92,40 @@ public class PostServiceImplementation implements PostService {
 		
 	}
 
+//	@Override
+//	public Post likePost(Integer postId, Integer userId) throws Exception {
+//		
+//		Post post= findPostById(postId);
+//		User user =userService.findUserById(userId);
+//		
+//		if(post.getLiked().contains(user)) {
+//			post.getLiked().remove(user);
+//		} else {
+//			post.getLiked().add(user);
+//		}
+//		
+//		post.getLiked().add(user);
+//		return postrepository.save(post);
+//	}
+
+	
 	@Override
 	public Post likePost(Integer postId, Integer userId) throws Exception {
-		
-		Post post= findPostById(postId);
-		User user =userService.findUserById(userId);
-		
-		if(post.getLiked().contains(user)) {
-			post.getLiked().remove(user);
-		} else {
-			post.getLiked().add(user);
-		}
-		
-		post.getLiked().add(user);
-		return postrepository.save(post);
+	    Post post = findPostById(postId);
+	    User user = userService.findUserById(userId);
+
+	    List<User> likedUsers = post.getLiked();
+
+	    if (likedUsers.contains(user)) {
+	        likedUsers.remove(user); // User already liked, so remove the like
+	    } else {
+	        likedUsers.add(user); // User didn't like, so add the like
+	    }
+
+	    post.setLiked(likedUsers);
+	    
+	    return postrepository.save(post);
 	}
+
 
 }
